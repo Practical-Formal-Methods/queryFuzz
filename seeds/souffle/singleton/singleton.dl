@@ -1,0 +1,17 @@
+
+.decl a(x:number)
+a(0).
+
+.decl b(x:number)
+
+.decl query(x:symbol) // fuzzable relation
+.output query()
+query("t1") :- a(x).
+query("t2") :- a(_x).
+query("t3") :- a(_).
+query("t4") :- b(x).
+query("t5") :- b(_x).
+query("t6") :- b(_).
+query("t7") :- a(x), b(y).
+query("t8") :- a(x), a(y).
+query("t9") :- b(x), b(y).

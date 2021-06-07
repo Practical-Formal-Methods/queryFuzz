@@ -1,0 +1,35 @@
+
+.type state <: symbol
+.type string <: symbol
+.type index <: number
+
+.decl transition(from : state, on : string, to : state)
+.input transition
+
+.decl accepting(x : state)  // fuzzable relation
+.input accepting
+
+.decl start(x : state) // fuzzable relation
+.input start
+
+.decl toparse(x : string)
+.input toparse
+
+
+
+.decl parse(in : string, cur : state, i : index)
+parse(in,cur,0) :- toparse(in), start(cur).
+parse(in,new,i+j) :-     parse(in,old,i),     transition(old,diff,new),     j=strlen(diff),     diff=substr(in,i,j).
+// The rule above can cause the AST translator to fail in old versions of Souffle
+
+.decl accept(in : string)
+accept(in) :- parse(in,cur,strlen(in)), accepting(cur).
+
+.decl out(s : string, result : symbol)
+out(s, "Accept") :- accept(s).
+out(s, "Reject") :- toparse(s), !accept(s).
+.output out
+
+
+.decl inject(a:state) // fuzzable relation
+inject(a) :- parse(b,a,c), accept(b).

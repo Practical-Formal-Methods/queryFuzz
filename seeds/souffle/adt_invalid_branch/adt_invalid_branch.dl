@@ -1,0 +1,12 @@
+
+
+
+.type A = Int {x: number} | Float {x: float}
+
+.decl R(x: A)
+R($Int(0)) :- $Int(1) != $Int(2).
+R($Int(1)) :- $Int(1) != $Int(1).
+R($Int(2)) :- $Int(1) = $Int(1).
+R($Int(3)) :- $Int(1) != $Float(1).
+.output R
+

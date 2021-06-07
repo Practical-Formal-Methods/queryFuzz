@@ -1,0 +1,16 @@
+
+.decl BaseOne(X:number) // fuzzable relation
+.input BaseOne
+
+.decl BaseTwo(X:number) // fuzzable relation
+.input BaseTwo
+
+.decl Valid(X:number) // fuzzable relation
+Valid(X) :- BaseOne(X), X >= 0.
+
+.decl Reduced(X:number) // fuzzable relation
+Reduced(X) :- BaseTwo(X), Valid(Y), Valid(Z), Y = X+1, Z = W+2, W = X+3, X-1 = -1+X+0.
+
+.decl Query()
+.output Query
+Query() :- Reduced(0).

@@ -1,0 +1,36 @@
+{
+    "bug_id" : 8,
+	"buggy_version" : "4bf6d1ceba23693d3e4a2e8bda3b86fec86f93a2", 
+    "bug_link" : "https://github.com/souffle-lang/souffle/issues/1848", 
+    "path_to_souffle_engine" : "",
+    "engine" : "souffle",
+    "seed" : "1622314040", 
+    "i" : 1,
+    "j" : 0,
+    "seed_file" : "bigrams",
+    "orig_engine_options" : "",
+    "trans_engine_options" : "--disable-transformers=ResolveAliasesTransformer",
+    "bug_type" : "soundness",
+    "number_of_transformations" : 100,
+    "souffle_types": [
+        "number"
+    ],
+    "souffle_options": [
+        ""
+    ],
+    "max_number_of_simple_rules": 10,
+    "max_number_of_complex_rules": 0,
+    "max_number_of_mixed_rules": 0,
+    "max_number_of_cycle_breaker_rules": 1,
+    "max_number_of_disjunctions": 0,
+    "max_number_of_body_subgoals": 6,
+    "aggregate": false,
+    "max_number_of_fact_tables": 3,
+    "max_number_of_fact_rows": 100,
+    "max_fact_arity": 3,
+    "inline": true,
+    "max_head_arity": 3,
+    "max_transformation_sequence": 20,
+    "max_rule_transformations": 1,
+    "max_heads_in_mixed_rule" : 0
+}

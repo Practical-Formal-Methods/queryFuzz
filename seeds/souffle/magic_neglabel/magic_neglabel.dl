@@ -1,0 +1,20 @@
+
+
+.decl Base(X:number) // fuzzable relation
+.input Base()
+
+
+.decl A(X:number) // fuzzable relation
+.decl B(X:number) // fuzzable relation
+A(X) :- Base(X).
+A(X) :- B(X), Base(X).
+B(X) :- A(X), X != 0.
+
+
+.decl C(X:number) // fuzzable relation
+C(X) :- Base(X), !B(X).
+
+
+.decl Query(X:number) // fuzzable relation
+.output Query()
+Query(X) :- C(X), A(X).

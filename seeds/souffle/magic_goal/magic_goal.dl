@@ -1,0 +1,21 @@
+
+
+.decl a(x:symbol) // fuzzable relation
+.decl g(x:symbol) // fuzzable relation
+.decl e(x:symbol) // fuzzable relation
+.decl h(x:symbol, y:symbol) // fuzzable relation
+.decl c(x:symbol) // fuzzable relation
+.decl b(x:symbol, y:symbol) // fuzzable relation
+.decl goal()
+
+.output goal()
+
+b("bbb", "ccc").
+h("ddd", "eee").
+c("fff").
+g("ggg").
+
+a(X) :- g(X).
+a(X) :- b(X, Y), a(Y).
+e(X) :- c(X), a(X), h(X, Y), c(Y), a(Y).
+goal() :- e("bbb").

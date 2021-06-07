@@ -1,0 +1,37 @@
+{
+    "bug_id" : 10,
+    "buggy_version" : "7089610bbd45fc51651ba8caac925cabb479092f",
+	"path_to_z3_engine" : "",
+    "bug_link" : "https://github.com/souffle-lang/souffle/issues/4870", 
+    "engine" : "z3",
+    "seed" : "1622643927", 
+    "i" : 39,
+    "j" : 28,
+    "seed_file" : "unknown",
+    "orig_engine_options" : "",
+    "trans_engine_options" : "",
+    "bug_type" : "soundness",
+    "number_of_transformations" : 100,
+    "souffle_types": [
+        ""
+    ],
+    "souffle_options": [
+        ""
+    ],
+    "max_number_of_simple_rules": 3,
+    "max_number_of_complex_rules": 0,
+    "max_number_of_mixed_rules": 0,
+    "max_number_of_cycle_breaker_rules": 1,
+    "max_number_of_disjunctions": 0,
+    "max_number_of_body_subgoals": 3,
+    "aggregate": false,
+    "max_number_of_fact_tables": 3,
+    "max_number_of_fact_rows": 10,
+    "max_fact_arity": 3,
+    "inline": false,
+    "max_head_arity": 3,
+    "max_transformation_sequence": 20,
+    "max_rule_transformations": 1,
+    "max_heads_in_mixed_rule" : 0,
+    "max_number_of_negated_subgoals" : 0
+}

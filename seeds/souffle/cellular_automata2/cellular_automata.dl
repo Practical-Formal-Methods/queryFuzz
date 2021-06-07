@@ -1,0 +1,71 @@
+// Souffle - A Datalog Compiler
+
+.decl default(null:number) // fuzzable relation
+.input default()
+
+// The parameters to the array, including its length.
+.decl parameters(length:number) // fuzzable relation
+.input parameters()
+
+// The values of the elements in the array, specified by index. Note that any unspecified elements will take the default value.
+.decl values(index:number, value:number) // fuzzable relation
+.input values()
+
+// The indices of the array, used as a background set to ground the index parameter of elements.
+.decl indices(index:number) // fuzzable relation
+.output indices()
+indices(0).
+indices(i+1) :- indices(i), parameters(l), i >= 0, i+1 < l.
+
+// The elements of the array, referenced by an index, and having a specified value. Note that if a value is not specified an element takes the default value.
+.decl element(index:number, value:number) // fuzzable relation
+.output element()
+element(i, NULL) :- indices(i), !values(i, _), default(NULL).
+element(i, x) :- indices(i), values(i, x).
+
+// The value of the element to the left of the element specified by the index, or the default value if it is out of the array bounds.
+.decl left(index:number, value:number) // fuzzable relation
+left(i, NULL) :- !element(i-1, _), element(i, _), default(NULL).
+left(i, x) :- element(i-1, x), element(i, _).
+
+// The value of the element to the right of the element specified by the index, or the default value if it is out of bounds.
+.decl right(index:number, value:number) // fuzzable relation
+right(i, NULL) :- !element(i+1, _), element(i, _), default(NULL).
+right(i, x) :- element(i+1, x), element(i, _).
+
+// The local neighbourhood of a specified element, giving the value of that element, and the elements surrounding it.
+.decl neighbourhood(index:number,  left:number, current:number, right:number) // fuzzable relation
+.output neighbourhood()
+neighbourhood(i, l, c, r) :- left(i, l), element(i, c), right(i, r).
+
+.decl ter(time:number) // fuzzable relation
+.input ter()
+
+// The transition function, giving the value of a cell at time t+1 from the values of that cell and its local environment at time t.
+.decl transition(prev:number, center:number, next:number, value:number) // fuzzable relation
+.input transition()
+
+// The value of the cell to the left of the cell specified by the index at the given time, or the default value if it is out of the array bounds.
+.decl prev(time:number, index:number, value:number) // fuzzable relation
+prev(t, i, NULL) :- !element(i-1, _), cell(t, i, _), default(NULL).
+prev(t, i, x) :- cell(t, i-1, x), element(i, _).
+
+// The value of the cell to the right of the cell specified by the index at the given time, or the default value if it is out of the array bounds.
+.decl next(time:number, index:number, value:number) // fuzzable relation
+next(t, i, NULL) :- !element(i+1, _), cell(t, i, _), default(NULL).
+next(t, i, x) :- cell(t, i+1, x), element(i, _).
+
+// The cells, referenced by a time and their index in the backing array of elements, and having a value that is either 0 or 1.
+.decl cell(time:number, index:number, value:number) // fuzzable relation
+.output cell()
+
+// The value of a cell at time 0 is the value of its backing element.
+cell(0, i, x) :- element(i, x).
+
+// The value of a cell at time t+1 is given by the transition function on the value of the local environment at time t.
+cell(t+1, i, x) :- !ter(t), environment(t, i, l, c, r), transition(l, c, r, x).
+
+// The local environment of a cell, giving the value of the specified cell at time t, as well as that of its nearest neighbours.
+.decl environment(time:number, index:number, prev:number, center:number, next:number) // fuzzable relation
+.output environment()
+environment(t, i, l, c, r) :-  prev(t, i, l), cell(t, i, c), next(t, i, r).

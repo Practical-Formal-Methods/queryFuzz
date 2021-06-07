@@ -1,0 +1,9 @@
+
+.decl input_triple(x:number, y:number, z:number)
+.input input_triple()
+
+
+.decl result(result:symbol) // fuzzable relation
+result(result) :- input_triple(x,y,z), triple = cat("(", to_string(x), ",", to_string(y), ",", to_string(z), ")"), mm = cat("MAX = [", to_string(max(x,y,z)), "], MIN = [", to_string(min(x,y,z)), "]"), result = cat(triple, ": ", mm).
+
+.output result()

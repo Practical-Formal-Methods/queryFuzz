@@ -1,0 +1,56 @@
+
+.decl a()
+a() :- f(_,2).
+
+
+.decl b()
+b() :- !g(_).
+b() :- b(), c(0,1,2), d(3), e(4), f(5,_), h(7).
+
+.decl c(x:number, y:number, z:number) // fuzzable relation
+c(x,y,z) :- a(), e(x), f(y, z).
+
+
+.decl d(x:number) // fuzzable relation
+d(x) :- e(x), b().
+d(x+1) :- d(x), f(x,x), h(x), x < 100.
+
+
+.decl e(x:number) // fuzzable relation
+e(0).
+e(x+1) :- e(x), x < 100.
+
+
+.decl f(x:number, y:number) // fuzzable relation
+f(0,1).
+f(1,2).
+f(2,4).
+f(3,8).
+f(x,x) :- f(0,x), l(x).
+
+
+.decl g(x:number) // fuzzable relation
+
+.decl h(x:number) // fuzzable relation
+h(x) :- f(x,_).
+
+
+.decl i(x:number) // fuzzable relation
+i(0).
+
+
+.decl k(x:number) // fuzzable relation
+k(1).
+
+
+
+
+.decl l(x:number) // fuzzable relation
+l(x) :- f(_,x).
+l(x) :- l(0), k(x).
+
+
+
+.decl query(x:number) // fuzzable relation
+query(x) :- a(), b(), c(_,_,_), d(_), e(_), f(_,_), !g(_), h(_), i(x), k(_), l(_).
+.output query()

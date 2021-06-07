@@ -1,0 +1,47 @@
+
+{
+	"original_timeout" : 60,
+	"transformed_timeout" : 120, 
+	"query_fuzz_home" : "",
+	"path_to_souffle_engine" : "",
+	"path_to_ddlog_engine" : "",
+	"path_to_ddlog_home_dir" : "",
+	"path_to_z3_engine" : "",
+	"souffle_types" : ["number", "symbol", "unsigned", "float"],
+	"z3_types" :["Z"],
+	"ddlog_types" : ["string"],
+	"souffle_options" : ["", "--magic-transform=*" , "", ""],
+
+	"number_of_programs" : 10, 
+	"number_of_transformations" : 10,
+
+				
+	"max_number_of_simple_rules" : 2,
+	"max_number_of_complex_rules" : 2,
+	"max_number_of_mixed_rules" : 2,
+	"max_number_of_cycle_breaker_rules" : 2,
+	"max_number_of_disjunctions" : 1,
+
+				
+	"max_number_of_body_subgoals" : 3,
+	"max_number_of_predicates" : 3,
+	"max_heads_in_mixed_rule" : 3, 
+	"max_number_of_negated_subgoals" : 3,
+
+	"aggregate" : true,
+	"max_subgoals_in_aggregates" : 3, 
+
+	"max_expression_adding_operations" : 3,
+
+	"in_file_facts" : false,
+	"max_number_of_fact_tables" : 3,
+	"max_number_of_fact_rows" : 10,
+	"max_fact_arity" : 3,
+
+				
+	"inline" : true,
+	"max_head_arity" : 3,
+	"max_transformation_sequence" : 20,
+	"max_rule_transformations" : 1,
+	"unsafe_negations" : false
+}

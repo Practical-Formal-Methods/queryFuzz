@@ -1,0 +1,36 @@
+
+
+.type Node <: symbol
+
+.decl a  (node1:Node) // fuzzable relation
+.output a  ()
+.decl b  (node1:Node) // fuzzable relation
+.output b  ()
+.decl c  (node1:Node, node2:Node) // fuzzable relation
+.output c  ()
+.decl projection  (node1:Node) // fuzzable relation
+.output projection  ()
+.decl cartesian   (node1:Node, node2:Node) // fuzzable relation
+.output cartesian   ()
+.decl inner_join  (node1:Node) // fuzzable relation
+.output inner_join  ()
+
+a("a1").
+a("a2").
+a("a3").
+
+b("b1").
+b("b2").
+b("a1").
+
+c("a1","b2").
+c("a1","a1").
+c("a2","b2").
+
+projection(X) :- c(X,_).
+
+cartesian(X,Y) :- a(X), b(Y).
+
+inner_join(X) :- a(X), b(X).
+
+

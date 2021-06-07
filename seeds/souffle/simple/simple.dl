@@ -1,0 +1,14 @@
+
+
+.type the_type <: symbol
+
+.decl the_input(x:the_type) // fuzzable relation
+.input the_input()
+.decl the_output(x:the_type) // fuzzable relation
+.output the_output()
+.decl hello_world(x:the_type) // fuzzable relation
+.decl is_hello_world(x:the_type) // fuzzable relation
+
+hello_world("helloworld").
+is_hello_world(X) :- the_input(X), hello_world(X).
+the_output(X) :- is_hello_world(X).

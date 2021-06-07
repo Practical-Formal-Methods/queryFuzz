@@ -1,0 +1,30 @@
+// Souffle - A Datalog Compiler
+// Copyright (c) 2017, The Souffle Developers. All rights reserved
+// Licensed under the Universal Permissive License v 1.0 as shown at:
+// - https://opensource.org/licenses/UPL
+// - <souffle root>/licenses/SOUFFLE-UPL.txt
+
+// Find pairs of amicable numbers up to a limit
+// A pair of numbers are amicable if the sum of their factors add up to each other
+
+// Build search range
+.decl num(x : number) // fuzzable relation
+num(1).
+num(x+1) :- num(x), x < l, lim(l).
+
+// Search limit
+.decl lim(n : number) // fuzzable relation
+.input lim
+
+// Find factors of x excluding itself
+.decl factorr(x : number, f : number) // fuzzable relation
+factorr(x, f) :- num(x), num(f), f <= x / 2, x % f = 0.
+
+// Compute the sum of all the factors of x
+.decl factor(x : number, fs : number) // fuzzable relation
+factor(x, f) :- num(x), f = sum i : factorr(x, i).
+
+// Find pairs of numbers whose factors add up to each other
+.decl amicable(a : number, b : number) // fuzzable relation
+.output amicable()
+amicable(a, b) :- factor(a, b), factorr(b, a), a < b.

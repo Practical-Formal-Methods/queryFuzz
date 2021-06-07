@@ -1,0 +1,17 @@
+
+.decl A(x:unsigned, y:unsigned, z:symbol, x1:symbol, y1:unsigned, z1:unsigned, x2:unsigned)
+A(1,5,"","X",0,0,0).
+A(2,5,"","Y",0,0,0).
+
+.decl B(x:unsigned,x2:unsigned) // fuzzable relation
+B(1,2).
+
+.decl C(x:unsigned,x2:unsigned) // fuzzable relation
+C(x,y):-   B(x,y),    !A(y,_,_,_,_,_,_).
+
+.output C
+
+
+
+.decl inject(a:unsigned, b:unsigned) // fuzzable relation
+inject(a,b) :- A(a,_,_,_,_,_,_) , B(b,_).

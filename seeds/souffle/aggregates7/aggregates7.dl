@@ -1,0 +1,57 @@
+
+.decl IndexAggregateCount(m:number, n:number) // fuzzable relation
+.decl S(m:number, n:number) // fuzzable relation
+
+.output IndexAggregateCount
+S(1, 1).
+S(1, (n+1)) :- S(1, n), n < 1000.
+IndexAggregateCount(1, x) :- x = count : { S(1, _) }.
+
+// index aggregate max
+.decl IndexAggregateMax(m:number, n:number) // fuzzable relation
+.decl A(m:number, n:number) // fuzzable relation
+
+.output IndexAggregateMax
+A(1, 1).
+A(1, (n+1)) :- A(1, n), n < 100.
+IndexAggregateMax(1, x) :- x = max y : { A(1, y) }.
+
+// index aggregate mean
+.decl C(a:float, b:float)
+.decl IndexAggregateMean(m:float, n:float)
+.output IndexAggregateMean
+C(1, 1).
+C(1, (n+1)) :- C(1, n), n < 100.
+IndexAggregateMean(1, x) :- x = mean y : { C(1, y) }.
+
+// index aggregate min
+.decl D(m:number, n:number) // fuzzable relation
+.decl IndexAggregateMin(m:number, n:number) // fuzzable relation
+.output IndexAggregateMin
+D(1, 1).
+D(1, (n+1)) :- D(1, n), n < 100.
+IndexAggregateMin(1, x) :- x = min y : { D(1, y) }.
+
+// index aggregate sum
+.decl IndexAggregateSum(m:number, n:number) // fuzzable relation
+.decl F(m:number, n:number) // fuzzable relation
+.output IndexAggregateSum
+F(1, 1).
+F(1, (n+1)) :- F(1, n), n < 100.
+IndexAggregateSum(1, x) :- x = sum y : F(1, y).
+
+.decl G(x:float)
+.decl AggregateOverflow(x:float)
+.decl H(x:float, y:float) 
+.decl IndexAggregateOverflow(x:float, y:float)
+.output AggregateOverflow, IndexAggregateOverflow
+
+G(4).
+G(6).
+
+AggregateOverflow(x) :- x = mean y : G(y).
+
+H(1, 4).
+H(1, 6).
+
+IndexAggregateOverflow(1, x) :- x = mean y : H(1, y).

@@ -1,0 +1,11 @@
+
+
+.type R = [x:number, y:symbol]
+
+.decl A(x:R, y:number)
+A([1,"a"], 2).
+
+.decl B(x:symbol) // fuzzable relation
+B(x) :- A([_,x], _).
+
+.output B()

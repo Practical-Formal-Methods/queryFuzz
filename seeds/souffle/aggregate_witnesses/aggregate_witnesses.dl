@@ -1,0 +1,80 @@
+
+.decl Student(name:symbol, height:number)
+.decl Tallest(student:symbol, height:number)
+
+.decl inject(a:number, b:number) // fuzzable relation
+inject(a,b) :- Student(_,a), Tallest(_, b).
+
+Student("Anna", 170).
+Student("Rachel", 177).
+Student("Quarantina", 180).
+
+Tallest(student, n) :- n = max height : { Student(student, height) }.
+
+.output Student, Tallest()
+
+.decl A(x:number, y:number) // fuzzable relation
+.decl MinSumNotReduced(x:number, y:number, s:number) // fuzzable relation
+.decl MinSum(x:number, y:number, s:number) // fuzzable relation
+
+
+A(1, 2).
+A(5, 6).
+A(-50, 3).
+A(54, 5).
+
+MinSum(x, y, s) :- s = min w : { A(x, y), w = x + y }.
+MinSumNotReduced(x, y, s) :- s = min x + y : { A(x, y) }.
+
+.output A, MinSum, MinSumNotReduced()
+
+
+.decl D(x:number, y:number) // fuzzable relation
+.decl B(x:number, y:number) // fuzzable relation
+.decl H(x:number, y:number, z:number) // fuzzable relation
+
+.decl F(s:symbol, x:number, y:number) 
+.decl G(s:symbol, groupby:number, x:number, y:number)
+
+
+.decl fuzz(a:number, b:number) // fuzzable relation
+fuzz(a,b) :- F(_,a,b) , G(_,_,a,_).
+
+
+
+D(1, 1).
+D(1, 2).
+D(1, 3).
+D(1, 4).
+
+B(2, 1).
+B(2, 2).
+B(2, 3).
+B(2, 4).
+
+H(1, 2, 3).
+H(24, 5, 6).
+H(7, 8, 9).
+H(10, 11, 12).
+
+// test witnesses in complex target expression and discard of result
+F("Two witnesses", x, y) :- _ = min x + y : { D(x, y) }.
+
+// test one witness in complex target expression
+F("One witness", result, witness) :- result = min 2 * witness : { D(witness, _) }.
+
+// test regular side witness
+G("Two side witnesses", result, w1, w2) :- result = max x : { H(x, w1, w2) }.
+
+// test reaching witness
+F("Reaching witness", result, witness) :- result = count : { B(x, _), x > min y : { D(y, witness) } }.
+
+// test that local variables are scoped (renamed uniquely)
+F("two side-by-side aggregates", res1, res2) :- res1 = count : { D(_, y), y > 1 }, res2 = count : { D(_, y), y < 4 }.
+
+// check that scoping is all gucci!
+G("Serious scoping test", x, y, z) :- x = max y : { D(_, y), y < min y : { B(_, y) } }, y = min y : { H(_, y, _) }, z = min y : { B(y, _), y != 2 }.
+
+F("Witness that is also injected", result, witness) :- result = max x : { D(x, witness), x < count : { B(_, witness) }  }.
+
+.output D, B, H, F, G()

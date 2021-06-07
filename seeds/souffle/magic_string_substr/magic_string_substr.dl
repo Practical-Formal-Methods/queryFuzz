@@ -1,0 +1,27 @@
+
+.decl A(x:symbol) // fuzzable relation
+A("abc123").
+A("bc123a").
+A("c123ab").
+A("123abc").
+A("23abc1").
+A("3abc12").
+
+.decl B(x:symbol) // fuzzable relation
+B(substr(x,2,2)) :- A(x).
+
+.output B()
+
+.decl Nullary()
+Nullary().
+
+.decl C(x:symbol) // fuzzable relation
+C(substr("12",22,12)) :- Nullary().
+
+.output C()
+
+
+
+.type T = [ x:number ]
+.decl P(x:T)
+P([0]).

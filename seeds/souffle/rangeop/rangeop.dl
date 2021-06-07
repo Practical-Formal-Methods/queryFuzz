@@ -1,0 +1,19 @@
+
+.decl out1(X:number) // fuzzable relation
+.output out1()
+out1(X) :- X = range(1, 10).
+
+// Range with different step
+.decl out2(X:number) // fuzzable relation
+.output out2()
+out2(X) :- X = range(9, 0, -1).
+
+// Range appearing twice with the same endpoints
+.decl out3(X:number, Y:number) // fuzzable relation
+.output out3()
+out3(X,Y) :- X = range(1,3), Y = range(1,3).
+
+// Same range used multiple times
+.decl out4(X:number, Y:number) // fuzzable relation
+.output out4()
+out4(X,Y) :- X = range(0,3), Y = range(0,3), X < Y, X + Y = 3.

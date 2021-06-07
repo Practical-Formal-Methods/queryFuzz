@@ -1,0 +1,13 @@
+
+.decl a(x: number, y: number) // fuzzable relation
+a(1, 2).
+
+.decl b(x:number, y:number) // fuzzable relation
+b(1, 2).
+b(2, 3).
+b(43, 43).
+
+.decl c(x:number, y:number) // fuzzable relation
+c(x, y) :- b(x, y), !a(x, y).
+
+.output c()

@@ -1,0 +1,24 @@
+
+.decl Numbers(x: number) // fuzzable relation
+Numbers(-10).
+Numbers(x + 1) :- Numbers(x), x < 10.
+
+// Converts numbers to float and back. Following should hold: NumberToFloatToNumber = Numbers.
+.decl NumberToFloatToNumber(x: number) // fuzzable relation
+NumberToFloatToNumber(to_number(to_float(x))) :- Numbers(x).
+
+// Converts non-negative numbers to unsigned and back.
+.decl NumbersToUnsignedToNumbers(x: unsigned, y: number)
+NumbersToUnsignedToNumbers(to_unsigned(x), to_number(to_unsigned(x))) :- Numbers(x), x >= 0.
+
+// Converts: Unsigned -> Float -> Unsigned
+.decl UnsignedToFloatToUnsigned(x: unsigned)
+UnsignedToFloatToUnsigned(to_unsigned(to_float(x))) :- NumbersToUnsignedToNumbers(x, _).
+
+
+.decl FloatToInt(x:number) // fuzzable relation
+FloatToInt(x) :- to_number(0.2) = x.
+FloatToInt(x) :- to_number(-3.3) = x.
+FloatToInt(x) :- to_number(-333.27) = x.
+FloatToInt(x) :- to_number(-333.36) = x.
+

@@ -1,0 +1,16 @@
+
+.decl Element(value:number) // fuzzable relation
+
+Element(1).
+Element(2).
+Element(7).
+Element(25).
+Element(104).
+
+
+.decl mxm(value:number) // fuzzable relation
+
+mxm(val) :- val = max ElementValue : Element(ElementValue).
+
+.output mxm()
+

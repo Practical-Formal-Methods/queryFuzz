@@ -1,0 +1,10 @@
+.type A <: symbol
+
+.decl Y (a:A, b:A) // fuzzable relation
+.decl Z (a:A, b:A, c:A) // fuzzable relation
+.output Z ()
+
+Y("a","b").
+Y("c","d").
+
+Z(a,b, cat(cat(a,b), a)) :- Y(a,b).

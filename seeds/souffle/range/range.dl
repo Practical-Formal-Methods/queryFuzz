@@ -1,0 +1,25 @@
+
+
+
+.decl range_(minimum:number, maximum:number) // fuzzable relation
+.input range_()
+
+.decl inclusive_inclusive(x:number) // fuzzable relation
+.output inclusive_inclusive()
+inclusive_inclusive(x)    :- range_(x, _).
+inclusive_inclusive(x+1)  :- inclusive_inclusive(x), x+1 <= y, range_(_, y).
+
+.decl inclusive_exclusive(x:number) // fuzzable relation
+.output inclusive_exclusive()
+inclusive_exclusive(x)    :- range_(x, _).
+inclusive_exclusive(x+1)  :- inclusive_exclusive(x), x+1 < y, range_(_, y).
+
+.decl exclusive_inclusive(x:number) // fuzzable relation
+.output exclusive_inclusive()
+exclusive_inclusive(x+1)  :- range_(x, _).
+exclusive_inclusive(x+1)  :- exclusive_inclusive(x), x+1 <= y, range_(_, y).
+
+.decl exclusive_exclusive(x:number) // fuzzable relation
+.output exclusive_exclusive()
+exclusive_exclusive(x+1)  :- range_(x, _).
+exclusive_exclusive(x+1)  :- exclusive_exclusive(x), x+1 < y, range_(_, y).

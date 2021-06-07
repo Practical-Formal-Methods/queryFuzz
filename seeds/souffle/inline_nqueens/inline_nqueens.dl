@@ -1,0 +1,38 @@
+
+.decl size( n : number )
+.input size()
+
+
+
+.decl solution( qs : QueenList )
+.printsize solution
+solution(qs) :- compatible(qs, s), size(s).
+
+
+
+.decl up_to_size( x : number )
+up_to_size(1).
+up_to_size(x + 1) :- up_to_size(x), !size(x).
+
+
+.type Position = [ x : number, y : number ]
+
+
+.decl on_board( p : Position ) // fuzzable relation
+on_board([x, y]) :- up_to_size(x), up_to_size(y).
+
+
+.type QueenList = [ p : Position, qs : QueenList ]
+
+
+.decl non_diagonals( p : Position, q : Position ) // fuzzable relation
+non_diagonals([px, py], [qx, qy]) :- px - qx != py - qy, qx - px != py - qy, on_board([px, py]), on_board([qx, qy]).
+
+
+.decl sympathetic( p : Position, q : Position ) // fuzzable relation
+sympathetic(p, q) :- non_diagonals(p, q), px != qx, py != qy, p=[px, py], q=[qx,qy].
+
+
+.decl compatible( qs : QueenList, n : number )
+compatible([p, nil], 1) :- on_board(p). //, p = [1,y].
+compatible([p, [head, tail]], n+1) :- sympathetic(p, head), compatible([p, tail], n), compatible([head, tail], n), p = [px, py], head = [hx, hy], px > hx.

@@ -1,0 +1,20 @@
+
+.decl gen(x : number) // fuzzable relation
+gen(1).
+gen(x+1) :- gen(x), !lim(x).
+
+.decl lim(x : number)
+lim(100).
+
+
+.decl factor(num : number, fc : number) // fuzzable relation
+factor(x, fc) :- gen(x), gen(fc), x % fc = 0, fc != 1.
+
+
+.decl prod(num : number) // fuzzable relation
+prod(x) :- gen(x), gen(a), gen(b), b != x, a != x, x = a*b.
+
+
+.decl p_factor(x : number, fc : number) // fuzzable relation
+.output p_factor()
+p_factor(x, fc) :- factor(x, fc), !prod(fc).

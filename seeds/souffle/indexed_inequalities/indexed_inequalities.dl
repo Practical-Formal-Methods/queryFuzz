@@ -1,0 +1,35 @@
+
+.decl rel_1(x:unsigned) 
+.output rel_1
+
+rel_1(0).
+rel_1(x+1) :- rel_1(x), x >= 0, x < 5.
+
+.decl rel_2(x:unsigned) 
+.output rel_2
+
+rel_2(2^32-5).
+rel_2(x+1) :- rel_2(x), x >= 2^32-5, x < 2^32-1.
+
+.decl rel_3(x:float) // fuzzable relation
+.output rel_3
+
+rel_3(64.0).
+rel_3(x / 2) :- rel_3(x), x >= 0.001.
+
+.decl rel_4(x:float) // fuzzable relation
+.output rel_4
+
+rel_4(x) :- rel_3(x), x >= 0.04, x <= 0.2.
+
+.decl rel_5(x:number, y:symbol, z:float, a:number)
+.output rel_5
+
+rel_5(0, "apple", 3.0, 0).
+rel_5(x-1, "strawberry", z+0.125, a-2) :- rel_5(x, _, z, a), x >= -5, z <= 5.0, a > -12.
+rel_5(x, "mango", z, a) :- rel_5(x, _, z, a), x >= -3, z <= 4.0, a > -10.
+
+
+.decl inject(a:float) // fuzzable relation
+
+inject(a) :- rel_5(_,_,a,_), rel_4(_), rel_3(_), rel_2(b).

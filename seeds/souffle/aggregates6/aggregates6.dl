@@ -1,0 +1,14 @@
+
+.decl A(x:number) // fuzzable relation
+.decl B(x:number) // fuzzable relation
+
+A(-2147483648). // INT_MIN 32 bits
+B(2147483647).  // INT_MAX 32 bits.
+
+
+.decl C(x: number) // fuzzable relation
+.decl D(x: number) // fuzzable relation
+.output C,D
+
+C(x) :- x = max y : A(y).
+D(x) :- x = min y : B(y).

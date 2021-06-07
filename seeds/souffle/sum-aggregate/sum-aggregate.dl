@@ -1,0 +1,14 @@
+.type String <: symbol
+
+.decl Benchmark(n : String, query: String, backend: String, trans: String, time: number, mem : number)
+.input Benchmark()
+.decl Metrics(snapshot: String, numIS : number, numEni: number)
+.input Metrics()
+
+.decl DOM(n:number) // fuzzable relation
+.output DOM()
+.decl SUM(n:number) // fuzzable relation
+.output SUM()
+
+DOM(IS) :- Benchmark(s, _, "z3", _, _, _), Metrics(s, IS, _).
+SUM(V) :- V = sum IS : DOM(IS).

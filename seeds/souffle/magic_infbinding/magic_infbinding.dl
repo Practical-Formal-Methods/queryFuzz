@@ -1,0 +1,16 @@
+
+.decl seed(X:number) // fuzzable relation
+.input seed
+
+
+.decl valid(X:number) // fuzzable relation
+.input valid
+
+
+.decl gen(X:number) // fuzzable relation
+gen(X) :- seed(X).
+gen(X) :- gen(X+1), valid(X).
+
+.decl query()
+.output query
+query() :- gen(0).

@@ -1,0 +1,19 @@
+
+.decl a(x:number) // fuzzable relation
+a(3).
+a(4).
+
+.decl b(x:number) // fuzzable relation
+b(1).
+b(2).
+b(3).
+b(4).
+b(5).
+
+.decl empty(x:number) // fuzzable relation
+
+.decl c(x:number) // fuzzable relation
+
+c(x) :- b(x), !a(x), !empty(0).
+
+.output c()

@@ -1,0 +1,14 @@
+
+.decl worried(x:symbol) // fuzzable relation
+.output worried()
+
+worried(x) :- person(x), !jailed(x), thief(y), !jailed(y).
+
+.decl person(x:symbol) // fuzzable relation
+.input person()
+
+.decl thief(x:symbol) // fuzzable relation
+.input thief()
+
+.decl jailed(x:symbol) // fuzzable relation
+.input jailed()

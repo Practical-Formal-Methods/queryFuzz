@@ -1,0 +1,6 @@
+
+.decl A(x:float) // fuzzable relation
+.output A
+
+A(0.0).
+A(x+1) :- A(x), x = -0.0.

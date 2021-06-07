@@ -1,0 +1,34 @@
+
+
+.type State <: number
+.type Letter <: symbol
+
+.decl Q    (q:State) // fuzzable relation
+.decl Init   (q:State) // fuzzable relation
+.decl Final   (q:State) // fuzzable relation
+.decl Tr   (q:State, a:Letter, r:State)
+
+.input Final
+.input Tr
+
+Init(0).
+
+Q(q) :- Tr(q, _, _).
+
+.decl Dis   (q:State, r:State)
+
+Dis(q, r) :- Q(q), Q(r), Final(q), !Final(r).
+Dis(q, r) :- Tr(q, a, s), Tr(r, a, t), Dis(s, t).
+Dis(q, r) :- Dis(r, q).
+
+.decl Equiv  (q:State, r:State) // fuzzable relation
+
+Equiv(q, r) :- Q(q), Q(r), !Dis(q, r).
+
+.decl NotMinEquiv (q:State, r:State) // fuzzable relation
+.decl MinEquiv  (q:State, r:State) // fuzzable relation
+
+NotMinEquiv(q, r) :- Equiv(q, r), Equiv(q, s), s < r.
+MinEquiv(q, r) :- Equiv(q, r), !NotMinEquiv(q, r).
+
+.output MinEquiv

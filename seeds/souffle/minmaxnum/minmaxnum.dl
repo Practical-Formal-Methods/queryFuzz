@@ -1,0 +1,20 @@
+
+
+.decl test_pair(x:number, y:number) // fuzzable relation
+.input test_pair()
+
+.decl bounded_difference(x:number, y:number, result:number) // fuzzable relation
+bounded_difference(x, y, max(x-y, 0)) :- test_pair(x,y).
+
+// Finds the sum of two given numbers.
+// The result is capped at 50.
+.decl bounded(x:number, y:number, result:number) // fuzzable relation
+bounded(x, y, min(x+y, 50)) :- test_pair(x,y).
+
+
+.decl absolute_difference(x:number, y:number, result:number) // fuzzable relation
+absolute_difference(x, y, max(x-y, y-x)) :- test_pair(x,y).
+
+.output bounded_difference()
+.output bounded()
+.output absolute_difference()

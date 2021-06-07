@@ -1,0 +1,9 @@
+
+.decl W(x:number, y:number) // fuzzable relation
+.decl X(n:number) // fuzzable relation
+
+X(1). X(2). X(10). X(11).
+
+W(c, n) :- X(n), c = count : { X(m), m < n }.
+
+.output W()

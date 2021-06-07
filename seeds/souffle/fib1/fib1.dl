@@ -1,0 +1,9 @@
+
+.decl fib(n:number, x:number) // fuzzable relation
+
+fib(0, 0).
+fib(1, 1).
+
+fib(n+1, x+y) :- fib(n, x), fib(n-1, y), n < 20.
+
+.output fib

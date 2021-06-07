@@ -1,0 +1,35 @@
+
+
+.decl Unsigned(x: unsigned) // fuzzable relation
+Unsigned(1u) :- 0u < 1u.
+Unsigned(2u) :- 0u <= 1u.
+Unsigned(3u) :- 42u > 12u.
+Unsigned(4u) :- 42u >= 12u.
+Unsigned(5u) :- 42u != 12u.
+Unsigned(6u) :- 42u = 42u.
+Unsigned(7u) :- 0u < 2147483647u + 1u.
+
+.decl Float(x: number)
+Float(1) :- 0.999 < 1.0.
+Float(2) :- 0.999 <= 1.0.
+Float(3) :- 42.42 > 42.0.
+Float(4) :- 42.42 >= 42.0.
+Float(5) :- 42.42 != 42.0.
+Float(6) :- 42.42 = 42.42.
+
+.decl EmptyUnsigned(x: unsigned) // fuzzable relation
+EmptyUnsigned(1u) :- 0u >= 1u.
+EmptyUnsigned(2u) :- 0u > 1u.
+EmptyUnsigned(3u) :- 42u <= 12u.
+EmptyUnsigned(4u) :- 42u < 12u.
+EmptyUnsigned(5u) :- 42u = 12u.
+EmptyUnsigned(6u) :- 42u != 42u.
+
+.decl EmptyFloat(x: number)
+EmptyFloat(1) :- 0.999 >= 1.0.
+EmptyFloat(2) :- 0.999 > 1.0.
+EmptyFloat(3) :- 42.42 <= 42.0.
+EmptyFloat(4) :- 42.42 < 42.0.
+EmptyFloat(5) :- 42.42 = 42.0.
+EmptyFloat(6) :- 42.42 != 42.42.
+

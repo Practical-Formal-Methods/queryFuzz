@@ -1,0 +1,20 @@
+
+.type Thing <: symbol
+
+.type Conn = [    first : Thing,    second : Thing]
+
+.decl a(x:Conn, y:Conn)
+a(["Hello", "Goodbye"], ["temporary", "value"]).
+a(["temporary", "value"], ["NO", "NO"]).
+a(["can", "do"], ["my", "value"]).
+
+.decl b(x:Conn, y:Conn)
+b(["good job", "bad job"], ["can", "do"]).
+b(x, y) :- a(x, y), x != ["temporary", "value"].
+
+.decl c(x:Conn)
+c(x) :- a(z, y), b(x, z), x != y.
+
+.decl d(x:Thing) // fuzzable relation
+d(x) :- c([x, _]).
+.output d()

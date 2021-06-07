@@ -1,0 +1,17 @@
+
+
+.decl samegen(x:number, y:number) // fuzzable relation
+
+.decl node(x:number) // fuzzable relation
+.input node()
+
+.decl parent(x:number, y:number) // fuzzable relation
+.input parent()
+
+.decl query()
+.output query()
+
+samegen(x, x) :- node(x).
+samegen(x, y) :- parent(x, a), samegen(a, b), parent(y, b).
+
+query() :- samegen(16384,32767).

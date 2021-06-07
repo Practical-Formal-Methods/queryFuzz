@@ -1,0 +1,30 @@
+
+.decl edge ( a:number , b:number ) // fuzzable relation
+.input edge ()
+.decl mark ( a:number ) // fuzzable relation
+.input mark ()
+
+
+.decl i1 ( a:number ) // fuzzable relation
+.output i1
+i1(X) :- mark(X), edge(_,X).
+
+.decl i01 ( a:number ) // fuzzable relation
+.output i01
+i01(X) :- mark(X), edge(X,X).
+
+
+// those caused a bug once -- but now both should be the same
+
+.decl MarkedNoInA ( a:number ) // fuzzable relation
+.output MarkedNoInA ()
+
+MarkedNoInA(X) :-     mark(X),    ! edge(X,_).
+
+
+.decl MarkedNoInB ( a:number ) // fuzzable relation
+.output MarkedNoInB ()
+MarkedNoInB(X) :-     mark(X),     ! in(X).
+
+.decl in( a:number ) // fuzzable relation
+in(X) :- edge(X,_).

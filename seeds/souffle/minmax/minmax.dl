@@ -1,0 +1,50 @@
+.type Integer <: symbol
+
+.decl succ(a:Integer, b:Integer) // fuzzable relation
+.decl equal(x:Integer, y:Integer, r:Integer) // fuzzable relation
+.output equal()
+.decl mim(x:Integer, y:Integer, r:Integer) // fuzzable relation
+.output mim()
+.decl mxm(x:Integer, y:Integer, r:Integer) // fuzzable relation
+.output mxm()
+.decl iss(r:Integer) // fuzzable relation
+.output iss()
+
+equal("0", "0", "0").
+equal(m, n, r) :- succ(pm, m), succ(pn, n), equal(pm, pn, r).
+
+mim("1", "0", "1").
+mim("2", "0", "1").
+mim("3", "0", "1").
+mim(m, n, r) :- succ(pm, m), succ(pn, n), mim(pm, pn, r).
+
+mxm("0", "1", "2").
+mxm("0", "2", "2").
+mxm("0", "3", "2").
+mxm(m, n, r) :- succ(pm, m), succ(pn, n), mxm(pm, pn, r).
+
+iss(r) :- equal("6", "6", r).
+iss(r) :- mim("6", "6", r).
+iss(r) :- mxm("6", "6", r).
+
+succ("0", "1").
+succ("1", "2").
+succ("2", "3").
+succ("3", "4").
+succ("4", "5").
+succ("5", "6").
+succ("6", "7").
+succ("7", "8").
+succ("8", "9").
+succ("9", "10").
+succ("10", "11").
+succ("11", "12").
+succ("12", "13").
+succ("13", "14").
+succ("14", "15").
+succ("15", "16").
+succ("16", "17").
+succ("17", "18").
+succ("18", "19").
+succ("19", "20").
+

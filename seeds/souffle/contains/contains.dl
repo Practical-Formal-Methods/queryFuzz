@@ -1,0 +1,18 @@
+
+.type String <: symbol
+
+.decl stringTable (t:String) // fuzzable relation
+.decl substringTable (t:String) // fuzzable relation
+.decl outputData  (sub_str:String, str:String) // fuzzable relation
+.output outputData  ()
+
+outputData(x,y) :- substringTable(x), stringTable(y), contains(x,y).
+
+stringTable("aaaa").
+stringTable("abba").
+stringTable("bcab").
+stringTable("bdab").
+
+substringTable("a").
+substringTable("ab").
+substringTable("cab").

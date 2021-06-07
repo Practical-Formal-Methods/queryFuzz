@@ -1,0 +1,16 @@
+
+.decl A (n:number) // fuzzable relation
+.decl B (a:number, b:number) // fuzzable relation
+.decl C (a:number, b:number) // fuzzable relation
+.output C ()
+
+
+A(0).
+A(i+1) :- A(i), i<100.
+
+
+B($,i) :- A(i).
+
+
+C(i,j) :- B(c,i), B(c,j), i!=j.
+

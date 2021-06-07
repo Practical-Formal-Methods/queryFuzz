@@ -1,0 +1,30 @@
+
+.decl Add(x: number) // fuzzable relation
+Add(to_number(x)) :- x = -1.5 + 1.5.    // 0
+Add(to_number(x)) :- x = 0.125 + 325.0. // 325
+Add(to_number(x)) :- x = 0.333 + 0.777. // 1
+Add(to_number(x)) :- x = -1.232 + (-123.7). // -124
+
+.decl Minus(x: number) // fuzzable relation
+Minus(to_number(x - 0.4)) :- x = 0.0 ; x = 325.0 ; x = 1.0; x = -124.0.
+Minus(to_number(x - (-2.0))) :- x = 0.0 ; x = 325.0 ; x = 1.0; x = -124.0.
+
+.decl Multiply(x: number) // fuzzable relation
+Multiply(to_number(x)) :- x = 3.0 * 0.5.         // 1
+Multiply(to_number(x)) :- x = 100.0 * -(0.409).  // -40
+Multiply(to_number(x)) :- x = -0.3 * (-8.0).     // 2
+
+.decl Divide(x: number) // fuzzable relation
+Divide(to_number(x)) :- x = 100.0 / 0.5 + 0.5.
+
+.decl Exp(x: number) // fuzzable relation
+Exp(to_number(x)) :- x = (2.0 ^ 4.0) + 0.5. // 16
+
+.decl Max(x: number) // fuzzable relation
+Max(to_number(x)) :- x = max(1.0, 2.3, -1.5, 120.35). // 120
+
+.decl Min(x: number) // fuzzable relation
+Min(to_number(x)) :- x = min(1.0, 2.3, -1.5, 120.35). // -1
+
+
+.output Minus, Add, Multiply, Divide, Exp, Max, Min

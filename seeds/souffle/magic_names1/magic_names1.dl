@@ -1,0 +1,31 @@
+
+
+.type Node <: symbol
+.decl m0_Reachable_ff()
+
+m0_Reachable_ff().
+
+m0_Reachable_ff() :-   m0_Reachable_ff(),   Edge(_,_).
+
+.decl Edge(n:Node,m:Node) // fuzzable relation
+
+Edge("A","B").
+
+Edge("B","C").
+
+Edge("C","D").
+
+Edge("D","B").
+
+
+.decl Reachable(n:Node,m:Node) // fuzzable relation
+.output Reachable
+
+Reachable(arg0,arg1) :-   Reachable_ff(arg0,arg1).
+
+
+.decl Reachable_ff(n:Node,m:Node) // fuzzable relation
+
+Reachable_ff(x,y) :-   m0_Reachable_ff(),   Edge(x,y).
+
+Reachable_ff(x,y) :-   m0_Reachable_ff(),   Edge(x,z),   Reachable_ff(z,y).

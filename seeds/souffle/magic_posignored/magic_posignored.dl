@@ -1,0 +1,23 @@
+
+.decl Pairs(A:float, B:float) // fuzzable relation
+Pairs(0,0).
+
+.decl First(A:float) // fuzzable relation
+First(x) :- Pairs(x,_).
+
+// Ignored - x < 100 is a float comparison.
+.decl DupFirst(A:float, B:float) // fuzzable relation
+DupFirst(x,x) :- First(x), x < 100.
+
+// Used negated later on, so should be neglabelled.
+// BUT: DupFirst is ignored, so it shouldn't be. Ignore this too.
+.decl FirstAgain(A:float) // fuzzable relation
+FirstAgain(x) :- DupFirst(x,_).
+
+// If stratification messes up, this will be true
+.decl Fail()
+Fail() :- FirstAgain(x), !FirstAgain(x).
+
+.decl Out(A:float) // fuzzable relation
+.output Out
+Out(x) :- Fail(), First(x).

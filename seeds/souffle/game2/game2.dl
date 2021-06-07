@@ -1,0 +1,29 @@
+
+.type Node <: symbol
+
+.decl move (node1:Node, node2:Node) // fuzzable relation
+.output move ()
+.decl odd_move (node1:Node, node2:Node) // fuzzable relation
+.output odd_move ()
+.decl canMove (node1:Node) // fuzzable relation
+.output canMove ()
+.decl possible_winning (node1:Node) // fuzzable relation
+.output possible_winning ()
+.decl winning (node1:Node) // fuzzable relation
+.output winning ()
+
+move("1","2").
+move("2","3").
+move("3","4").
+move("1","3").
+move("1","5").
+
+canMove(X):- move(X,_).
+
+possible_winning(X):- odd_move(X,Y), !canMove(Y).
+
+winning(X):- move(X,Y), !possible_winning(Y).
+
+odd_move(X,Y) :- move(X,Y).
+
+odd_move(X,Y) :- move(X,Z1), move(Z1,Z2), odd_move(Z2,Y).

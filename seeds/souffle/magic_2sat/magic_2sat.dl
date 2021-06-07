@@ -1,0 +1,38 @@
+
+.type Var <: symbol
+.type Neg <: symbol
+.type Val <: symbol
+.type Card <: number
+.type Ans <: symbol
+
+.decl Clause (m:Neg, u:Var, n:Neg, v:Var)
+.input Clause
+
+.decl Not (m:Neg, n:Neg) // fuzzable relation
+
+Not("Pos", "Neg").
+Not("Neg", "Pos").
+
+.decl Impl (m:Neg, u:Var, n:Neg, v:Var)
+
+Impl(m, u, n, v) :- Not(m, p), Clause(p, u, n, v).
+Impl(m, u, n, v) :- Not(m, p), Clause(n, v, p, u).
+
+
+Impl(m, u, n, v) :- Impl(m, u, p, w), Impl(p, w, n, v).
+
+.decl Incon(u:Var)
+
+
+Incon(u) :- Impl("Pos", u, "Neg", u), Impl("Neg", u, "Pos", u).
+
+.decl Satisfiable(s:Ans)
+
+Satisfiable("Yes") :- !Incon(_).
+Satisfiable("No") :- Incon(_).
+
+.output Satisfiable
+
+
+.decl inject(a:Neg) // fuzzable relation
+inject(a) :- Impl(a,b,_,_), Not(_,_), Incon(b).

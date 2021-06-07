@@ -1,0 +1,25 @@
+
+
+.decl K(X:number) // fuzzable relation
+.decl R(X:number) // fuzzable relation
+.decl A(X:number) // fuzzable relation
+.decl B(X:number) // fuzzable relation
+.decl D(X:number) // fuzzable relation
+.decl Q(X:number) // fuzzable relation
+.decl E(X:number) // fuzzable relation
+.decl C(X:number) // fuzzable relation
+
+.input E,C
+
+B(X) :- E(X), X != 0.
+K(X) :- B(1), E(X), X != 0.
+
+R($) :- K($).
+
+A(X) :- C(X), !R(X).
+
+// A depends on R, so B should not be transformed
+D(X) :- A(X), B(X).
+
+Q(X) :- D(X).
+.output Q()

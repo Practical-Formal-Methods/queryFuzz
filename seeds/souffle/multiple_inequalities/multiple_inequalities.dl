@@ -1,0 +1,7 @@
+
+.decl A(x:number, y:number) // fuzzable relation
+A(x,y) :- x = range(1,5), y = range(1,10).
+
+.decl B(x:number, y:number) // fuzzable relation
+.output B
+B(x,y) :- A(x,y), 1 <= x, x <= 3, 1 <= y, y <= 3.

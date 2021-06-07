@@ -1,0 +1,16 @@
+
+.decl gen(x: number) // fuzzable relation
+gen(1).
+gen(x+1) :- gen(x), !lim(x).
+
+.decl lim(x:number) // fuzzable relation
+lim(100).
+
+
+.decl e_factor(x : number, fc : number) // fuzzable relation
+e_factor(x, fc) :- gen(fc), gen(x), x % fc = 0, x!=fc.
+
+
+.decl perfect(x : number) // fuzzable relation
+.output perfect()
+perfect(x) :- gen(x), x = sum i : e_factor(x, i).

@@ -1,0 +1,65 @@
+
+.decl BinaryNegation(x: unsigned) // fuzzable relation
+BinaryNegation(1u) :- bnot(1u) > 0u.
+
+.decl LogicalNegation(x: unsigned) // fuzzable relation
+LogicalNegation(0u) :- 1u = lnot(0u).
+LogicalNegation(1u) :- lnot(0u) != 0u.
+
+.decl Add(x: unsigned) // fuzzable relation
+Add(x + y) :- x = 5u, y = 5u.
+Add(x + y) :- x = 0u, y = 0u.
+Add(x + y) :- x = 3u, y = 1u.
+Add(x + y) :- x = 1000u, y = 2147483647u.
+
+.decl Sub(x: unsigned) // fuzzable relation
+Sub(x - y) :- x = 5u, y = 5u.
+Sub(x - y) :- x = 5u, y = 0u.
+Sub(x - y) :- x = 3u, y = 1u.
+Sub(42u) :- 0u - 1u > 0u. // overflow
+
+.decl Mul(x: unsigned) // fuzzable relation
+Mul(x * y) :- x = 5u, y = 5u.
+Mul(x * y) :- x = 5u, y = 0u.
+Mul(x * y) :- x = 3u, y = 1u.
+Mul(x * y) :- x = to_unsigned(2^16), y = to_unsigned(2^15). // Shouldn't overflow.
+
+.decl Exp(x: unsigned) // fuzzable relation
+Exp(x ^ y) :- x = 5u, y = 2u. // 25
+Exp(x ^ y) :- x = 5u, y = 3u. // 125
+Exp(x ^ y) :- x = 5u, y = 1u. // 5
+Exp(x ^ y) :- x = 2u, y = 4u. // 16
+
+.decl Mod(x: unsigned) // fuzzable relation
+Mod(x % y) :- x = 5u, y = 2u. // 1
+Mod(x % y) :- x = 25u, y = 5u. // 0
+
+.decl BitwiseAnd(x: unsigned) // fuzzable relation
+BitwiseAnd(x band y) :- x = 1u, y = 4u. // 0
+BitwiseAnd(x band y) :- x = 1u, y = 1u. // 1
+
+.decl BitwiseOr(x: unsigned) // fuzzable relation
+BitwiseOr(x bor y) :- x = 1u, y = 8u. // 9
+BitwiseOr(x bor y) :- x = 5u, y = 5u. // 5
+BitwiseOr(x bor y) :- x = 0u, y = 42u. // 42
+
+.decl BitwiseXor(x: unsigned) // fuzzable relation
+BitwiseXor(x bxor y) :- x = 1u, y = 4u. // 5
+BitwiseXor(x bxor y) :- x = 5u, y = 5u. // 0
+BitwiseXor(x bxor y) :- x = 0u, y = 42u. // 42
+
+.decl LogicalAnd(x: unsigned) // fuzzable relation
+LogicalAnd(x land y) :- x = 1u, y = 4u. // 1
+LogicalAnd(x land y) :- x = 1u, y = 0u. // 0
+
+.decl LogicalOr(x: unsigned) // fuzzable relation
+LogicalOr(x lor y) :- x = 1u, y = 4u. // 1
+LogicalOr(x lor y) :- x = 0u, y = 0u. // 0
+
+.decl Max(x: unsigned) // fuzzable relation
+Max(x) :- x = max(2u, 3u, 23u, 42u). // 42
+
+.decl Min(x: unsigned) // fuzzable relation
+Min(x) :- x = min(2u, 3u, 23u, 42u). // 2
+
+.output BinaryNegation, LogicalNegation, Add, Sub, Mul, Exp, Mod, BitwiseAnd, BitwiseOr, BitwiseXor, LogicalAnd, LogicalOr, Max, Min

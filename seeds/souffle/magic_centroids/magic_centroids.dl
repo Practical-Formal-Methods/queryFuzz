@@ -1,0 +1,35 @@
+
+
+.type Node <: symbol
+.type Card <: number
+
+.decl Edge(m:Node, n:Node) // fuzzable relation
+.input Edge
+
+Edge(m, n) :- Edge(n, m).
+
+.decl Leaf (n:Node) // fuzzable relation
+.decl NotLeaf (n:Node) // fuzzable relation
+
+NotLeaf(n) :- Edge(a, n), Edge(b, n), a != b.
+Leaf(n) :- Edge(_, n), !NotLeaf(n).
+
+.decl InSubtree (m:Node, n:Node, a:Node) // fuzzable relation
+
+InSubtree(m, n, n) :- Edge(m, n).
+InSubtree(m, n, a) :- Edge(m, n), Edge(n, p), InSubtree(n, p, a), m != p.
+
+.decl TreeCard (c:Card)
+.decl SubtreeCard (m:Node, n:Node, c:Card)
+
+TreeCard(a + b) :- a = sum 1 : Leaf(_), b = sum 1 : NotLeaf(_).
+
+SubtreeCard(m, n, c) :- Edge(m, n), c = sum 1 : InSubtree(m, n, _).
+
+.decl Centroid (n:Node) // fuzzable relation
+.decl NotCentroid (n:Node) // fuzzable relation
+
+NotCentroid(n) :- TreeCard(c), SubtreeCard(n, _, d), d > c/2.
+Centroid(n) :- Edge(n, _), !NotCentroid(n).
+
+.output Centroid
